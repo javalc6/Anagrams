@@ -11,6 +11,6 @@ javac Anagrams.java
 # Run
 Just use the following command to run the demo:
 ```
-java Anagrams <index filename>
+java Anagrams index_en.txt
 ```
 
