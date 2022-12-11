@@ -29,8 +29,8 @@ public class Anagrams {
     private final HashMap<String, Set<String>> anagrams;
 
     public Anagrams() {
-		anagrams = new HashMap<>();
-	}
+        anagrams = new HashMap<>();
+    }
 
     /** Constructor to build anagrams datastructure using a List of String
      * The list of strings shall contain one word for each string.
@@ -39,15 +39,15 @@ public class Anagrams {
      */
     public Anagrams(List<String> list) {
         HashMap<String, String> hm = new HashMap<>();
-		for (String word: list)	{
-			word = word.trim();
+        for (String word: list) {
+            word = word.trim();
             char[] chars = word.toCharArray();
             Arrays.sort(chars);
             hm.put(word, new String(chars));
         }
-		anagrams = processHashMap(hm);
+        anagrams = processHashMap(hm);
     }
-	
+
     /** Constructor to parse an index file to build anagrams datastructure.
      * The index file shall contain one word for each row.
      *
@@ -64,10 +64,10 @@ public class Anagrams {
             hm.put(word, new String(chars));
         }
         in.close();
-		anagrams = processHashMap(hm);
+        anagrams = processHashMap(hm);
     }
 
-	/** Returns the number of sets of anagrams.
+    /** Returns the number of sets of anagrams.
      * @return number of sets
      */
     public int size() {
@@ -111,13 +111,13 @@ public class Anagrams {
      *          equivalent to this object, false otherwise
      */
     public boolean equals(Object anObject) {
-		if (this == anObject)
-			return true;
-		if (anObject instanceof Anagrams) {
-			Anagrams anotherAnagrams = (Anagrams)anObject;
-			return anagrams.equals(anotherAnagrams.anagrams);
-		}
-		return false;
+        if (this == anObject)
+            return true;
+        if (anObject instanceof Anagrams) {
+            Anagrams anotherAnagrams = (Anagrams)anObject;
+            return anagrams.equals(anotherAnagrams.anagrams);
+        }
+        return false;
     }
 
     /**
@@ -127,12 +127,12 @@ public class Anagrams {
      */
     public void merge(Anagrams anotherAnagrams) {
         anotherAnagrams.anagrams.forEach((key, value) -> {
-			Set<String> set = anagrams.get(key);
-			if (set == null) {//no match
-				anagrams.put(key, new HashSet<>(value));//note that value is cloned to new Set
-			} else {//match
-				set.addAll(value);
-			}
+            Set<String> set = anagrams.get(key);
+            if (set == null) {//no match
+                anagrams.put(key, new HashSet<>(value));//note that value is cloned to new Set
+            } else {//match
+                set.addAll(value);
+            }
         });
     }
 
@@ -158,9 +158,9 @@ public class Anagrams {
         output.close();
     }
 
-	//internal processing method that returns anagrams as HashMap
-	private HashMap<String, Set<String>> processHashMap(HashMap<String, String> hm) {
-		HashMap<String, Set<String>> anagrams = new HashMap<>();
+    //internal processing method that returns anagrams as HashMap
+    private HashMap<String, Set<String>> processHashMap(HashMap<String, String> hm) {
+        HashMap<String, Set<String>> anagrams = new HashMap<>();
         Map<String, String> sorted_index = sortMapByValue(hm);
 
         String pred = null; Set<String> set = new HashSet<>();
@@ -180,12 +180,12 @@ public class Anagrams {
             }
             pred = canonical;
         }
-		if (pred != null) {//check for left-over
-			if (set.size() > 1)//check if there are at least two words
-				anagrams.put(pred, set);
-		}
-		return anagrams;
-	}
+        if (pred != null) {//check for left-over
+            if (set.size() > 1)//check if there are at least two words
+                anagrams.put(pred, set);
+        }
+        return anagrams;
+    }
 
     // sortMapByValue returns a map sorted by values (from high to low values)
     private static <K, V extends Comparable<? super V>> Map<K, V> sortMapByValue(Map<K, V> map) {
@@ -199,32 +199,32 @@ public class Anagrams {
         return result;
     }
 
-	//demo of this class, usage: java Anagrams <index filename>
+    //demo of this class, usage: java Anagrams <index filename>
     public static void main(String[] args) {
         if (args.length == 1)
             try {
-				System.out.println("Demo test of Anagrams class methods");
-				System.out.println("-----------------------------------");
+                System.out.println("Demo test of Anagrams class methods");
+                System.out.println("-----------------------------------");
 
                 Anagrams anagrams = new Anagrams(Arrays.asList(new String[]{"file", "life", "none"}));
                 Anagrams anagrams2 = new Anagrams();
-				anagrams2.merge(anagrams);
-				System.out.println("equality:"+anagrams2.equals(anagrams)+", expected value: true");
-				anagrams2.merge(new Anagrams(Arrays.asList(new String[]{"polo", "loop", "pool"})));
-				System.out.println("equality:"+anagrams2.equals(anagrams)+", expected value: false");
+                anagrams2.merge(anagrams);
+                System.out.println("equality:"+anagrams2.equals(anagrams)+", expected value: true");
+                anagrams2.merge(new Anagrams(Arrays.asList(new String[]{"polo", "loop", "pool"})));
+                System.out.println("equality:"+anagrams2.equals(anagrams)+", expected value: false");
 
-				System.out.println();
+                System.out.println();
                 System.out.println("Print all elements in anagrams2:");
                 Map<String, Set<String>> anagramsMap = anagrams2.getMap();
                 anagramsMap.forEach((key, value) -> System.out.println("key: " + key + ", value: " + value));
-				
-				System.out.println();
-				anagrams = new Anagrams(args[0]);
+
+                System.out.println();
+                anagrams = new Anagrams(args[0]);
                 System.out.println("File " + args[0] + " contains " + anagrams.size() + " different sets of anagrams");
 
                 System.out.println("Anagrams of word 'file' :" + anagrams.getAnagrams("file"));
 
-				System.out.println();
+                System.out.println();
                 System.out.println("Exporting anagrams to file");
                 anagrams.exportFile("anagrams.txt");
 
